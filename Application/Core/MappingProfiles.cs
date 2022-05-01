@@ -12,6 +12,7 @@ namespace Application.Core
         public MappingProfiles()
         {
             CreateMap<Travel, Travel>();
+            CreateMap<Stories,Stories>();
         }
     }
 }
