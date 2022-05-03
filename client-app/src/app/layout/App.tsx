@@ -8,6 +8,7 @@ import TravelDashboard from '../../features/travels/dashboard/TravelDashboard';
 
 function App() {
   const [travels, setTravels] = useState<Travel[]>([]);
+  const [selectedTravel, setSelectedTravel]= useState<Travel | undefined>(undefined);
 
   useEffect(() => {
     axios.get<Travel[]>('http://localhost:5000/api/travels').then(response => {
@@ -15,11 +16,24 @@ function App() {
     })
   }, [])
 
+  function handleSelectTravel(id: string){
+    setSelectedTravel(travels.find(x => x.id === id));
+
+  }
+  
+  function handleCancelSelectTravel(){
+    setSelectedTravel(undefined);
+  }
+
   return (
     <>
       <NavBar/>
       <Container style={{marginTop: '7em'}}>
-      <TravelDashboard travels={travels}/>
+      <TravelDashboard travels={travels}
+      selectedTravel={selectedTravel}
+      selectTravel={handleSelectTravel}
+      cancelSelectTravel={handleCancelSelectTravel}
+      />
       </Container>
     </>
   );

@@ -5,3 +5,6 @@ body{
 .navbar-dark{
   background-image:linear-gradient(135deg,rgb(22, 44, 131) 0%, rgb(33,138,174) 69%, rgb(32,167,172) 89%) ;
 }
+.form-control{
+  margin-bottom: 10px;
+}
