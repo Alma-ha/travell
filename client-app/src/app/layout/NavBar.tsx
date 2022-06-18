@@ -5,14 +5,19 @@ import  Nav  from "react-bootstrap/Nav";
 import  Button  from "react-bootstrap/Button";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export default function NavBar(){
+interface Props{
+    openForm: () => void;
+}
+
+export default function NavBar({openForm}: Props){
     return (
         <Navbar bg="dark" variant="dark">
             <Container>
-            <Navbar.Brand href="#home"><img src="./assets/logo2.png" height="40px" style={{marginRight: '10px'}}></img>TravelGuide</Navbar.Brand>
+            <Navbar.Brand href="/"><img src="./assets/logo2.png" height="40px" style={{marginRight: '10px'}} alt="logo"></img>TravelGuide</Navbar.Brand>
     <Nav className="Travels">
-      <Nav.Link href="#home">Travels</Nav.Link>
-      <Button>Create Travel</Button>
+      <Nav.Link href="/">Travels</Nav.Link>
+      <Nav.Link href="./Foods">Foods</Nav.Link>
+      <Button onClick={openForm}>Create Travel</Button>
     </Nav>
             </Container>
         </Navbar>

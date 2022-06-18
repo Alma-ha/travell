@@ -1,7 +1,7 @@
 export interface Travel {
         id: string;
         title: string;
-        date: Date;
+        date: string;
         description: string;
         category: string;
         city: string;

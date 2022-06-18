@@ -5,9 +5,10 @@ import { Travel } from "../../../app/models/travel";
 interface Props{
     travels:Travel[];
     selectTravel: (id: string) => void;
+    deleteTravel: (id: string) =>void;
 }
 
-export default function TravelList({travels, selectTravel}: Props){
+export default function TravelList({travels, selectTravel, deleteTravel}: Props){
     return(
         <Container>
             
@@ -22,6 +23,7 @@ export default function TravelList({travels, selectTravel}: Props){
                          <div>{travel.description}</div>
                          <div>{travel.city}, {travel.venue}</div>
                              <Button onClick={() => selectTravel(travel.id)} style={{float:"right",color:"white"}}>View</Button>
+                             <Button onClick={() => deleteTravel(travel.id)} style={{float:"right",color:"white",marginRight:"3px",backgroundColor:"red",borderColor:"red"}}>Delete</Button>
                              <label>{travel.category}</label>
                      </Card.Text>
                       </Card.Body>

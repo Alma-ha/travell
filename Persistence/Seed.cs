@@ -99,8 +99,46 @@ namespace Persistence
                     City="China",
                 },
             };
+
+             if(context.ArtCulture.Any()) return;
+
+            var artculture= new List<ArtCulture>
+            {
+                new ArtCulture{
+                     Title="Art and Culture in Japan",
+                    Date=DateTime.Now.AddMonths(8),
+                    City="Japan",
+                    ArtTitle="Calligraphy",
+                    ArtDescription="Delicacy and exquisiteness of form, together with simplicity, characterize traditional Japanese artistic taste. The Japanese tend to view the traditional Chinese arts generally as being too grandiose or showy. The more recently introduced Western arts are felt to suffer from flaws of exuberant self-realization at the expense of earnest exploration of the conflicts in human relations, in particular the notions of divided loyalties between community, family, and self that create the bittersweet melancholy so pervasive in Japanese traditional drama.",
+                    CultureTitle="Geisha",
+                    CultureDescription="Like most nations, Japan has always had some manner of pleasure quarter offering various forms of entertainment. As Japan cut off all contact with the outside world during the Edo era, the rich merchants of the cities continued to develop the arts of the country in the major urban areas. With the many courtesans of the time providing one area of fulfilment, the merchants looked for other types of entertainment, including music, dance and poetry. From these early stages, the world of the geisha developed, providing a service to entertain and charm, working alongside the very desirable, and for most people unobtainable, courtesan.",
+                    Reviews="",
+                },
+                new ArtCulture{
+                     Title="Art and Culture in Mexico",
+                    Date=DateTime.Now.AddMonths(8),
+                    City="Mexico",
+                    ArtTitle="Folk Art",
+                    ArtDescription="Among examples of Mexican folk art are several styles of painting, some influenced by European religion and others by indigenous beliefs. These include retablo paintings, small images of saints, and ex-voto images, with writing on them expressing thanks to a particular saint.",
+                    CultureTitle="Lady of Guadalupe",
+                    CultureDescription="The Feast of Our Lady of Guadalupe(opens in new tab), which is celebrated on Dec. 12, is a major Mexican holiday celebrating the appearance of the Virgin Mary to an indigenous Mexican in the first years of Spanish rule. She is the patron saint of the country. This is followed closely by Posadas, a nine-day celebration in which people re-enact Mary and Joseph's journey to Bethlehem to search for a place to stay. Families go from door to door carrying candles and singing, asking for shelter until the owners open the door, at which point the party begins.",
+                    Reviews="",
+                },
+            };
+             if(context.ArtCulture.Any()) return;
+
+            var travelnews= new List<TravelNews>
+            {
+                new TravelNews{
+                     Title="Italy’s nurses to get monthly pay rise of up to €170",
+                    Date=DateTime.Now.AddMonths(8),
+                    Description="The collective bargaining agreement was signed between Aran, the agency tasked with representing Italian public administrations in labour negotiations, and six healthcare unions late on Wednesday evening, according to Italian media reports.",
+                }
+            };
             await context.Travels.AddRangeAsync(travels);
             await context.Stories.AddRangeAsync(stories);
+            await context.ArtCulture.AddRangeAsync(artculture);
+            await context.TravelNews.AddRangeAsync(travelnews);
             
             await context.SaveChangesAsync();
         }

@@ -15,5 +15,8 @@ namespace Persistence
 
         public DbSet<Travel> Travels { get; set; }
         public DbSet<Stories> Stories {get; set; }
+
+        public DbSet<ArtCulture> ArtCulture {get; set; }
+         public DbSet<TravelNews> TravelNews {get; set; }
     }
 }

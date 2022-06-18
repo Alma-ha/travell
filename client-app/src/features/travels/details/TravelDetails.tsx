@@ -5,9 +5,10 @@ import { Travel } from "../../../app/models/travel";
 interface Props{
     travel: Travel
     cancelSelectTravel: () => void;
+    openForm: (id: string) => void;
 }
 
-export default function TravelDetails({travel, cancelSelectTravel}: Props){
+export default function TravelDetails({travel, cancelSelectTravel, openForm}: Props){
     return(
         <Card style={{ width: '18rem' }}>
   <Card.Img variant="top" src={`/assets/categoryImages/${travel.city}.jpg`} />
@@ -17,7 +18,7 @@ export default function TravelDetails({travel, cancelSelectTravel}: Props){
       {travel.description}
     </Card.Text>
     <ButtonGroup>
-    <Button variant="primary">Edit
+    <Button onClick={() => openForm(travel.id)} variant="primary">Edit
     </Button>
     <Button onClick={cancelSelectTravel} variant="secondary">Cancel
     </Button>

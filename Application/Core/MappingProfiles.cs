@@ -13,6 +13,8 @@ namespace Application.Core
         {
             CreateMap<Travel, Travel>();
             CreateMap<Stories,Stories>();
+             CreateMap<ArtCulture,ArtCulture>();
+             CreateMap<TravelNews,TravelNews>();
         }
     }
 }
