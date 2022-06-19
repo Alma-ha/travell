@@ -1,14 +1,14 @@
+import { observer } from "mobx-react-lite";
 import React, { ChangeEvent, useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
-import { Travel } from "../../../app/models/travel";
+import { useStore } from "../../../app/stores/store";
 
-interface Props{
-    travel: Travel | undefined;
-    closeForm: () => void;
-    createOrEdit: (travel: Travel) => void;
-}
 
-export default function TravelForm({travel: selectedTravel, closeForm, createOrEdit}: Props){
+
+export default observer(function TravelForm(){
+
+    const {travelStore} =useStore();
+    const {selectedTravel, closeForm, createTravel, updateTravel, loading} = travelStore;
 
     const initialState= selectedTravel ?? {
         id: '',
@@ -23,7 +23,7 @@ export default function TravelForm({travel: selectedTravel, closeForm, createOrE
     const [travel, setTravel] = useState(initialState);
 
     function handleSubmit(){
-        createOrEdit(travel);
+        travel.id ? updateTravel(travel) : createTravel(travel);
     }
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
@@ -37,12 +37,12 @@ export default function TravelForm({travel: selectedTravel, closeForm, createOrE
                 <Form.Control placeholder="Title" value={travel.title} name='title' onChange={handleInputChange}/>
                 <Form.Control as="textarea" placeholder="Description" value={travel.description} name='description' onChange={handleInputChange}/>
                 <Form.Control placeholder="Category"value={travel.category} name='category' onChange={handleInputChange}/>
-                <Form.Control placeholder="Date" value={travel.date} name='date' onChange={handleInputChange}/>
+                <Form.Control type='date' placeholder="Date" value={travel.date} name='date' onChange={handleInputChange}/>
                 <Form.Control placeholder="City" value={travel.city} name='city' onChange={handleInputChange}/>
                 <Form.Control placeholder="Venue" value={travel.venue} name='venue' onChange={handleInputChange}/>
-                <Button style={{float:"right",marginLeft:"10px"}} type="submit">Submit</Button>
+                <Button disabled={loading} style={{float:"right",marginLeft:"10px"}} type="submit">Submit</Button>
                 <Button onClick={closeForm} style={{float:"right"}} type="button">Cancel</Button>
             </Form>
         </Container>
     )
-}
+})

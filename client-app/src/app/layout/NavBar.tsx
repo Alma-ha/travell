@@ -4,12 +4,13 @@ import  Container  from "react-bootstrap/Container";
 import  Nav  from "react-bootstrap/Nav";
 import  Button  from "react-bootstrap/Button";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useStore } from "../stores/store";
 
-interface Props{
-    openForm: () => void;
-}
 
-export default function NavBar({openForm}: Props){
+
+export default function NavBar(){
+
+    const {travelStore} = useStore();
     return (
         <Navbar bg="dark" variant="dark">
             <Container>
@@ -17,7 +18,7 @@ export default function NavBar({openForm}: Props){
     <Nav className="Travels">
       <Nav.Link href="/">Travels</Nav.Link>
       <Nav.Link href="./Foods">Foods</Nav.Link>
-      <Button onClick={openForm}>Create Travel</Button>
+      <Button onClick={() => travelStore.openForm()}>Create Travel</Button>
     </Nav>
             </Container>
         </Navbar>

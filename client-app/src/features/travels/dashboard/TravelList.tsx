@@ -1,19 +1,28 @@
-import React from "react";
+import { observer } from "mobx-react-lite";
+import React, {SyntheticEvent, useState} from "react";
 import { Button, Card, CardGroup, Container,Form, PageItem, Row, Col } from "react-bootstrap";
-import { Travel } from "../../../app/models/travel";
+import { useStore } from "../../../app/stores/store";
 
-interface Props{
-    travels:Travel[];
-    selectTravel: (id: string) => void;
-    deleteTravel: (id: string) =>void;
-}
 
-export default function TravelList({travels, selectTravel, deleteTravel}: Props){
+export default observer(function TravelList(){
+
+    const {travelStore} =useStore();
+    const {deleteTravel, travelsByDate, loading} = travelStore;
+
+    const [target, setTarget] = useState('');
+
+    function handleTravelDelete(e: SyntheticEvent<HTMLButtonElement>, id:string){
+        setTarget(e.currentTarget.name);
+        deleteTravel(id);
+    }
+    
+
+   
     return(
         <Container>
             
         <CardGroup style={{display:"table-row-group"}}>
-                   {travels.map(travel => (
+                   {travelsByDate.map(travel => (
                        <Row>
                            <Col>
                        <Card key={travel.id} style={{width:"600px", marginBottom:"10px"}}>
@@ -22,8 +31,10 @@ export default function TravelList({travels, selectTravel, deleteTravel}: Props)
                      <Card.Text>
                          <div>{travel.description}</div>
                          <div>{travel.city}, {travel.venue}</div>
-                             <Button onClick={() => selectTravel(travel.id)} style={{float:"right",color:"white"}}>View</Button>
-                             <Button onClick={() => deleteTravel(travel.id)} style={{float:"right",color:"white",marginRight:"3px",backgroundColor:"red",borderColor:"red"}}>Delete</Button>
+                             <Button onClick={() => travelStore.selectTravel(travel.id)} style={{float:"right",color:"white"}}>View</Button>
+                             <Button 
+                             name={travel.id}
+                             disabled={loading && target == travel.id} onClick={(e) => handleTravelDelete(e,travel.id)} style={{float:"right",color:"white",marginRight:"3px",backgroundColor:"red",borderColor:"red"}}>Delete</Button>
                              <label>{travel.category}</label>
                      </Card.Text>
                       </Card.Body>
@@ -34,4 +45,4 @@ export default function TravelList({travels, selectTravel, deleteTravel}: Props)
     </CardGroup>
         </Container>
     )
-}
+})

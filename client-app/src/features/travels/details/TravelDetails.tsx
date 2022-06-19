@@ -1,14 +1,15 @@
 import React from "react";
 import { Button, ButtonGroup, Card } from "react-bootstrap";
-import { Travel } from "../../../app/models/travel";
+import LoadingComponents from "../../../app/layout/LoadingComponents";
+import { useStore } from "../../../app/stores/store";
 
-interface Props{
-    travel: Travel
-    cancelSelectTravel: () => void;
-    openForm: (id: string) => void;
-}
 
-export default function TravelDetails({travel, cancelSelectTravel, openForm}: Props){
+export default function TravelDetails(){
+
+  const {travelStore}= useStore();
+  const {selectedTravel : travel, openForm, cancelSelectedTravel} =travelStore;
+
+  if(!travel) return <LoadingComponents content="Loading.."/>;
     return(
         <Card style={{ width: '18rem' }}>
   <Card.Img variant="top" src={`/assets/categoryImages/${travel.city}.jpg`} />
@@ -20,7 +21,7 @@ export default function TravelDetails({travel, cancelSelectTravel, openForm}: Pr
     <ButtonGroup>
     <Button onClick={() => openForm(travel.id)} variant="primary">Edit
     </Button>
-    <Button onClick={cancelSelectTravel} variant="secondary">Cancel
+    <Button onClick={cancelSelectedTravel} variant="secondary">Cancel
     </Button>
     </ButtonGroup>
   </Card.Body>
