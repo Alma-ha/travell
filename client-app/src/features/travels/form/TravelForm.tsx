@@ -1,16 +1,21 @@
 import { observer } from "mobx-react-lite";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import LoadingComponents from "../../../app/layout/LoadingComponents";
 import { useStore } from "../../../app/stores/store";
-
+import {v4 as uuid} from 'uuid';
 
 
 export default observer(function TravelForm(){
-
+    
+    const navigate= useNavigate();
     const {travelStore} =useStore();
-    const {selectedTravel, closeForm, createTravel, updateTravel, loading} = travelStore;
+    const {createTravel, updateTravel,
+         loading, loadTravel , loadingInitial} = travelStore;
+    const {id} =useParams<{id: string}>();
 
-    const initialState= selectedTravel ?? {
+    const [travel, setTravel] = useState({
         id: '',
         title: '',
         date: '',
@@ -18,12 +23,24 @@ export default observer(function TravelForm(){
         category: '',
         city: '',
         venue: ''
-    }
+    });
 
-    const [travel, setTravel] = useState(initialState);
+    useEffect(() =>{
+        if(id) loadTravel(id).then(travel => setTravel(travel!))
+    }, [id, loadTravel]);
+
+  
 
     function handleSubmit(){
-        travel.id ? updateTravel(travel) : createTravel(travel);
+       if( travel.id.length === 0) {
+        let newTravel={
+            ...travel,
+            id:uuid()
+        };
+        createTravel(newTravel).then(() => navigate(`/travels/${newTravel.id}`))
+       }else{
+        updateTravel(travel).then(() => navigate(`/travels/${travel.id}`))
+       }
     }
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
@@ -31,6 +48,8 @@ export default observer(function TravelForm(){
         setTravel({...travel, [name]: value})
     }
 
+
+        if(loadingInitial) return <LoadingComponents content="loading travel..." />
     return(
         <Container style={{height:"430px",backgroundColor:"white",marginTop:"40px"}}>
             <Form onSubmit={handleSubmit} autoComplete='off' style={{paddingTop:"20px"}}>
@@ -41,7 +60,9 @@ export default observer(function TravelForm(){
                 <Form.Control placeholder="City" value={travel.city} name='city' onChange={handleInputChange}/>
                 <Form.Control placeholder="Venue" value={travel.venue} name='venue' onChange={handleInputChange}/>
                 <Button disabled={loading} style={{float:"right",marginLeft:"10px"}} type="submit">Submit</Button>
-                <Button onClick={closeForm} style={{float:"right"}} type="button">Cancel</Button>
+                
+                <Link to='/travels'>
+                <Button style={{float:"right"}} type="button">Cancel</Button></Link>
             </Form>
         </Container>
     )

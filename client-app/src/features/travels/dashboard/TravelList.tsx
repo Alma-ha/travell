@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, {SyntheticEvent, useState} from "react";
 import { Button, Card, CardGroup, Container,Form, PageItem, Row, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { useStore } from "../../../app/stores/store";
 
 
@@ -31,7 +32,8 @@ export default observer(function TravelList(){
                      <Card.Text>
                          <div>{travel.description}</div>
                          <div>{travel.city}, {travel.venue}</div>
-                             <Button onClick={() => travelStore.selectTravel(travel.id)} style={{float:"right",color:"white"}}>View</Button>
+                         <Link to={`/travels/${travel.id}`}>
+                             <Button style={{float:"right",color:"white"}}>View</Button></Link>
                              <Button 
                              name={travel.id}
                              disabled={loading && target == travel.id} onClick={(e) => handleTravelDelete(e,travel.id)} style={{float:"right",color:"white",marginRight:"3px",backgroundColor:"red",borderColor:"red"}}>Delete</Button>

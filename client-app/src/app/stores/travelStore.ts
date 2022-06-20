@@ -1,7 +1,6 @@
 import { action, makeAutoObservable, makeObservable, observable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Travel } from "../models/travel";
-import {v4 as uuid} from 'uuid';
 
 export default class TravelStore{
     travelRegistry = new Map<string, Travel>();
@@ -21,11 +20,11 @@ export default class TravelStore{
     }
 
     loadTravels = async () => {
+        this.loadingInitial=true;
         try{
             const travels= await agent.Travels.list();
                 travels.forEach(travel => {
-                    travel.date= travel.date.split('T')[0];
-                    this.travelRegistry.set(travel.id, travel);
+                   this.setTravel(travel);
                   })
                   this.setLoadingInitial(false);
         }catch(error){
@@ -34,30 +33,44 @@ export default class TravelStore{
         }
     }
 
+
+    loadTravel =async (id: string) => {
+        let travel = this.getTravel(id);
+        if(travel) {
+            this.selectedTravel=travel;
+            return travel;
+        } else{
+            this.loadingInitial=true;
+            try{
+                travel = await agent.Travels.details(id);
+                this.setTravel(travel);
+                runInAction(() => {
+                    this.selectedTravel= travel;
+                })
+                this.setLoadingInitial(false);
+                return travel;
+            }catch(error){
+                console.log(error);
+                this.setLoadingInitial(false);
+            }
+        }
+    } 
+
+    private setTravel= (travel : Travel) => {
+        travel.date= travel.date.split('T')[0];
+        this.travelRegistry.set(travel.id, travel);
+    }
+
+    private getTravel = (id: string) =>{
+        return this.travelRegistry.get(id);
+    }
     setLoadingInitial = (state: boolean) =>{
         this.loadingInitial=state;
     }
 
 
-    selectTravel = (id: string) => {
-        this.selectedTravel=this.travelRegistry.get(id);
-    }
-
-    cancelSelectedTravel =() => {
-        this.selectedTravel =undefined;
-    }
-
-    openForm = (id? : string) => { 
-        id ? this.selectTravel(id) : this.cancelSelectedTravel();
-        this.editMode=true;
-    }
-    closeForm = () =>{
-        this.editMode=false;
-    }
-
     createTravel = async (travel: Travel) =>{
             this.loading=true;
-            travel.id = uuid();
             try{
                 await agent.Travels.create(travel);
                 runInAction(() =>{
@@ -97,8 +110,7 @@ export default class TravelStore{
         try{
             await agent.Travels.delete(id);
             runInAction(() => {
-                this.travelRegistry.delete(id);
-                if(this.selectedTravel?.id === id) this.cancelSelectedTravel();   
+                this.travelRegistry.delete(id);  
                 this.loading=false;
             })
         }catch(error){
