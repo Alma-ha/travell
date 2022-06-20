@@ -1,6 +1,5 @@
 import axios, {AxiosResponse} from 'axios';
 import { Story } from '../models/story';
-import { Travel } from '../models/travel';
 
 const sleep=(delay:number) => {
     return new Promise((resolve) =>{
@@ -29,17 +28,19 @@ const requests={
     del:<T> (url: string) => axios.delete<T>(url).then(responseBody),
 }
 
-const Travels={ 
-    list: () => requests.get<Travel[]>('/travels'),
-    details: (id: string) => requests.get<Travel>(`/travels/${id}`),
-    create: (travel: Travel) => axios.post<void>('/travels', travel),
-    update: (travel: Travel) => axios.put<void>(`/travels/${travel.id}`,travel),
-    delete: (id: string) =>axios.delete<void>(`/travels/${id}`)
+
+
+
+const Stories={ 
+    list: () => requests.get<Story[]>('/stories'),
+    details: (id: string) => requests.get<Story>(`/stories/${id}`),
+    create: (story: Story) => axios.post<void>('/stories', story),
+    update: (story: Story) => axios.put<void>(`/stories/${story.id}`,story),
+    delete: (id: string) =>axios.delete<void>(`/stories/${id}`)
+} 
+
+const agents={
+    Stories
 }
 
-const agent={ 
-    Travels
-}
-
-
-export default agent;
+export default agents;

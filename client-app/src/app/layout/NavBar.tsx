@@ -16,7 +16,9 @@ export default function NavBar(){
         <Nav.Link as={NavLink} to='/' >Homepage</Nav.Link>
       <Nav.Link as={NavLink} to='/travels'>Travels</Nav.Link>
       <Nav.Link href="./Foods">Foods</Nav.Link>
+      <Nav.Link as={NavLink} to='/stories'>Stories</Nav.Link>
       <Nav.Link as={NavLink} to='/CreateTravel' style={{backgroundColor:"blue", borderColor:"darkblue",color:"white" }}> Create Travel </Nav.Link>
+   
     </Nav>
             </Container>
         </Navbar>

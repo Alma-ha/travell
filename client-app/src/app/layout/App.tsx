@@ -8,6 +8,9 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import HomePage from '../../features/travels/home/HomePage';
 import TravelForm from '../../features/travels/form/TravelForm';
 import TravelDetails from '../../features/travels/details/TravelDetails';
+import StoryDashboard from '../../features/stories/dashboard/StoryDashboard';
+import StoryForm from '../../features/stories/form/StoryForm';
+import StoryDetails from '../../features/stories/details/StoryDetails';
 
 function App() {
   
@@ -23,7 +26,9 @@ function App() {
       <Route path='/travels' element={ <TravelDashboard/> } />
       <Route path='/travels/:id' element={ <TravelDetails/> } />
       {['/createTravel', '/manage/:id'].map((path, location:any) => <Route path={path} key={location.key} element={<TravelForm/>} />)}
-      
+      <Route path='/stories' element={ <StoryDashboard/> } />
+      <Route path='/stories/:id' element={ <StoryDetails/> } />
+      {['/createStory', '/manage/:id'].map((path, location:any) => <Route path={path} key={location.key} element={<StoryForm/>} />)}
       </Routes>
       </Container>
     </>
